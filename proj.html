@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+
+
+    <script>
+
+
+      function drawChart() {
+
+        var public_key = 'aGOE6rY5mxcxX1GNnOKq';
+
+        // JSONP request
+        var jsonData = $.ajax({
+          url: 'https://data.sparkfun.com/output/' + public_key + '.json',
+          data: {page: 1},
+          dataType: 'jsonp',
+        }).done(function (results) {
+
+          var data = new google.visualization.DataTable();
+
+          data.addColumn('string', 'user');
+          data.addColumn('number', 'temperature');
+          data.addColumn('number', 'light');
+         data.addColumn('number', 'temperature');
+          data.addColumn('number', 'light');
+
+          $.each(results, function (i, row) {
+            data.addRow([
+              row.user,
+              parseFloat(row.temperature),
+              parseFloat(row.temperature),
+              parseFloat(row.light),
+              parseFloat(row.light)
+            ]);
+          });
+        var options = {
+          title:'Live IoT Class Streaming',
+            hAxis: {
+          title: 'Current Users Streaming',
+          textStyle: {color: 'red'}
+        },
+        vAxis: {
+          title: 'Temperature(Celsius)-Light values',
+            textStyle: {color: 'blue'}
+
+        },
+          legend: 'none',
+          bar: { groupWidth: '100%' },
+          candlestick: {
+            fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+            risingColor: { strokeWidth: 0, fill: '#0f9d58' }
+          }
+        };
+          var chart = new google.visualization.CandlestickChart(document.getElementById('curve_chart'));
+
+          chart.draw(data,options);
+
+        });
+
+      }
+
+      google.setOnLoadCallback(drawChart);
+
+    </script>
+
+  </head>
+  <body>
+    <h1 align="center">Internet of Things Project - Data Streaming and Visualization using Raspberry Pi</h1>
+    <center><h3>Saisandeep Adapa <br>sadapa@kent.edu</br></h3></center>
+    <h2>Project Description</h2>
+    <p>The project is aimed to work around Internet of things.Raspberry pi computer which is connected to temperature sensor and photo diode through breadboard.
+    Then we talk to the sensors from Raspberry pi using python programming and make the sensors to work and detect their respective values.
+    The obtained data will be streamed to public data stream. Using these public data we try to visualize and bring out some meaningful information.</p>
+    <h2>Internet of "Things" Used</h2>
+    <p>Raspberry Pi 2 with NOOBS installed, WiFi Adapter<br>Breadboard, resistor(220Ω), 40-Pin GPIO Extension Board,Jumper wires, temperature sensor
+    , MCP3008 ADC</br></p>
+    <h2>Raspberry Pi Connections</h2>
+    <center><img src="/static/pi.gif" alt="some_text"></center>
+    <center><p>My Raspberry Pi Kit with the required sensors to detect temperature and light using the temperatures sensor and photo diode</p></center>
+    <center><img src="/static/pid.jpg" alt="some_text"></center>
+    <center><p>Raspberry Pi on my window detecting light and temperature with sensors and pushing the data to the data streams. This small kit is acting like a Weather Reporting Station</p></center>
+    <h2>Data Visualization</h2>
+    <center><div id="curve_chart" style="width: 100%; height: 500px;"></div></center>
+    <center><p>Used the CandleStickChart visualization for my data streaming Analysis.
+    The foot of the candle represents the temperature value collected from the sensor and
+    top of the candle gives the value of the light detected from photo diode.
+    X-axis on the graph represents the users who streamed the latest data. Y-axis gives the temperature and light values. When you roll the mouse over candle
+    you get (temperature-light) values from a particular user.The green color candle in the graph indicates the rise of the values and red color indicates the fall of values from the particular user</p></center>
+    <h2>My Streaming Location</h2>
+    <center><iframe src="http://adapa.pythonanywhere.com/maps" style="border:none" width="900" height="500"></iframe></center>
+    <center><p>This Map shows my current work location from where my latest data streaming is done.
+    When you roll the mouse over the pointer you get the latest update of the temperature streaming at my location</p></center>
+    <h2>Current Streaming locations</h2>
+    <center><iframe src="http://adapa.pythonanywhere.com/mapall" style="border:none" width="900" height="500"></iframe></center>
+    <center><p>The above Map has the locations of all devices that are currently streaming. Based on the latitude and longitude we get the locations and their temperature
+    in the map.</p></center>
+    <h2>Message Alerts!!</h2>
+    <center><img src="/static/tw.jpg" alt="Twilio Message Screen" style="width: 300px; height: 500px;"></center>
+    <center><p>With the Twilio Messaging service i made up to get weather alerts to my mobile for every 6 minutes. If the temperature is above 50 degrees i get the message as "Temperature out of control". In the above
+    screenshot as the temperature is less than 50 degrees celsius i get the alert as "Temperature under control"</p></center>
+    <h2>Conclusion</h2>
+    <p>With Raspberry Pi, I successfully made the live Data Streaming and Visualization with a messaging alert over my phone. In future I would like
+    to continue working on other "Internet of Things" through raspberry pi which would help me in my next course "Robotic Concepts".</p>
+  </body>
+</html>
