@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["map"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var public_key = 'aGOE6rY5mxcxX1GNnOKq';
+
+        // JSONP request
+        var jsonData = $.ajax({
+          url: 'https://data.sparkfun.com/output/' + public_key + '.json?eq[user]=sadapa',
+          data: {page: 1},
+          dataType: 'jsonp',
+        }).done(function (results) {
+
+
+ var data = new google.visualization.DataTable();
+
+          data.addColumn('number', 'Lat');
+          data.addColumn('number', 'Long');
+          data.addColumn('number', 'Name');
+          //data.addColumn('number', 'light');
+
+          $.each(results, function (i, row) {
+            data.addRow([
+              parseFloat(row.latitude),
+              parseFloat(row.longitude),
+              parseFloat(row.temperature),
+             // parseFloat(row.light)
+            ]);
+          });
+
+
+        var map = new google.visualization.Map(document.getElementById('map_div'));
+        map.draw(data, {showTip: true});
+
+      });
+
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div id="map_div" style="width: 900px; height: 500px"></div>
+  </body>
+</html>
